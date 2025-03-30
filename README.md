@@ -1,8 +1,9 @@
 # QuanLyGuiTietKiem
-HƯỚNG DẪN LÀM VIỆC VỚI DỰ ÁN QUANLYGUITIETKIEM
+NHÓM 03
+MÔN: Database Management System
+HƯỚNG DẪN LÀM VIỆC VỚI DỰ ÁN QUẢN LÝ GỬI TIẾT KIỆM CÓ THỜI HẠN
 
-Chào mọi người, 
-Dưới đây là hướng dẫn để các bạn clone project, thiết lập database, làm việc trên nhánh của mình, và đẩy thay đổi lên GitHub.
+Chào mọi người, dưới đây là hướng dẫn để các bạn clone project, thiết lập database, làm việc trên nhánh của mình, và đẩy thay đổi lên GitHub.
 
 QUAN TRỌNG: Trước khi bắt đầu thì bạn cần:
 - Xem video để hiểu và biết cách làm việc cơ bản với Git và GitHub
