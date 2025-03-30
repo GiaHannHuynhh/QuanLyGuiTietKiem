@@ -8,7 +8,7 @@ HƯỚNG DẪN LÀM VIỆC VỚI DỰ ÁN QUẢN LÝ GỬI TIẾT KIỆM CÓ TH�
 Chào mọi người, dưới đây là hướng dẫn để các bạn clone project, thiết lập database, làm việc trên nhánh của mình, và đẩy thay đổi lên GitHub.
 
 QUAN TRỌNG: Trước khi bắt đầu thì bạn cần:
-- Xem video để hiểu và biết cách làm việc cơ bản với Git và GitHub
+- Xem video trên Youtube để hiểu và biết cách làm việc cơ bản với Git và GitHub
 - Đảm bảo bạn đã cài Git (tải tại: https://git-scm.com/downloads nếu chưa có)
 - Tạo tài khoản GitHub -> gửi thông tin tài khoản (tên đăng nhập và gmail) lên group Zalo 
 - Đăng nhập GitHub vào Visual Studio
