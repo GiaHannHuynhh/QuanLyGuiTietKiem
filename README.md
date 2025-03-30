@@ -2,7 +2,6 @@
 HƯỚNG DẪN LÀM VIỆC VỚI DỰ ÁN QUANLYGUITIETKIEM
 
 Chào mọi người, 
-Repository này là private, nên mình sẽ thêm các bạn vào (kiểm tra email để chấp nhận lời mời từ GitHub). 
 Dưới đây là hướng dẫn để các bạn clone project, thiết lập database, làm việc trên nhánh của mình, và đẩy thay đổi lên GitHub.
 
 QUAN TRỌNG: Trước khi bắt đầu thì bạn cần:
