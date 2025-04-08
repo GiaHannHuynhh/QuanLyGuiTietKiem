@@ -16,5 +16,10 @@ namespace QuanLyGuiTietKiem
         {
             InitializeComponent();
         }
+
+        private void panel5_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
