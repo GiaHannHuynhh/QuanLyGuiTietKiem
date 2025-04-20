@@ -26,8 +26,15 @@ namespace QuanLyGuiTietKiem
             {
                 dbConnect.OpenConnection();
                 MessageBox.Show("Kết nối cơ sở dữ liệu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                dbConnect.CloseConnection();
-                MessageBox.Show("Đóng kết nối thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //dbConnect.CloseConnection();
+                //MessageBox.Show("Đóng kết nối thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                PersonalInformationForm form = new PersonalInformationForm();
+
+                
+                form.Show();
+
+
+
             }
             catch (Exception ex)
             {
