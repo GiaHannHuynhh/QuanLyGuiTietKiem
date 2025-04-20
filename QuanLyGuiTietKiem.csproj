@@ -68,6 +68,12 @@
     <Compile Include="AccountApprovalForm.Designer.cs">
       <DependentUpon>AccountApprovalForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomerDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomerDetailsForm.Designer.cs">
+      <DependentUpon>CustomerDetailsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CustomerManagementForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +81,12 @@
       <DependentUpon>CustomerManagementForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DB_Connect.cs" />
+    <Compile Include="EmployeeDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmployeeDetailsForm.Designer.cs">
+      <DependentUpon>EmployeeDetailsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EmployeeManagementForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,8 +104,14 @@
     <EmbeddedResource Include="AccountApprovalForm.resx">
       <DependentUpon>AccountApprovalForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CustomerDetailsForm.resx">
+      <DependentUpon>CustomerDetailsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomerManagementForm.resx">
       <DependentUpon>CustomerManagementForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmployeeDetailsForm.resx">
+      <DependentUpon>EmployeeDetailsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmployeeManagementForm.resx">
       <DependentUpon>EmployeeManagementForm.cs</DependentUpon>

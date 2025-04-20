@@ -59,6 +59,7 @@
             this.dgvPendingAccounts.RowTemplate.Height = 24;
             this.dgvPendingAccounts.Size = new System.Drawing.Size(573, 234);
             this.dgvPendingAccounts.TabIndex = 0;
+            this.dgvPendingAccounts.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPendingAccounts_CellContentClick);
             // 
             // btnApprove
             // 
@@ -69,6 +70,7 @@
             this.btnApprove.TabIndex = 1;
             this.btnApprove.Text = "Duyệt tài khoản";
             this.btnApprove.UseVisualStyleBackColor = true;
+            this.btnApprove.Click += new System.EventHandler(this.btnApprove_Click);
             // 
             // btnReject
             // 
@@ -79,6 +81,7 @@
             this.btnReject.TabIndex = 2;
             this.btnReject.Text = "Từ chối tài khoản";
             this.btnReject.UseVisualStyleBackColor = true;
+            this.btnReject.Click += new System.EventHandler(this.btnReject_Click);
             // 
             // lblMessage
             // 
@@ -89,6 +92,7 @@
             this.lblMessage.Size = new System.Drawing.Size(70, 20);
             this.lblMessage.TabIndex = 3;
             this.lblMessage.Text = "Chi tiết";
+            this.lblMessage.Click += new System.EventHandler(this.lblMessage_Click);
             // 
             // panel3
             // 
@@ -178,6 +182,7 @@
             this.btnClear.TabIndex = 21;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = false;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // panel8
             // 
@@ -221,6 +226,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AccountApprovalForm";
             this.Text = "AccountApprovalForm";
+            this.Load += new System.EventHandler(this.AccountApprovalForm_Load_1);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPendingAccounts)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

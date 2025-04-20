@@ -36,15 +36,15 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.dgvEmployees = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
             this.btnClear = new System.Windows.Forms.Button();
-            this.panel6 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.panel9 = new System.Windows.Forms.Panel();
@@ -61,6 +61,7 @@
             this.txtEmployeeID.Name = "txtEmployeeID";
             this.txtEmployeeID.Size = new System.Drawing.Size(189, 31);
             this.txtEmployeeID.TabIndex = 0;
+            this.txtEmployeeID.TextChanged += new System.EventHandler(this.txtEmployeeID_TextChanged);
             // 
             // lblMessage
             // 
@@ -71,6 +72,7 @@
             this.lblMessage.Size = new System.Drawing.Size(63, 22);
             this.lblMessage.TabIndex = 1;
             this.lblMessage.Text = "Chi tiết";
+            this.lblMessage.Click += new System.EventHandler(this.lblMessage_Click);
             // 
             // btnAdd
             // 
@@ -81,6 +83,7 @@
             this.btnAdd.TabIndex = 2;
             this.btnAdd.Text = "Thêm";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnUpdate
             // 
@@ -91,6 +94,7 @@
             this.btnUpdate.TabIndex = 3;
             this.btnUpdate.Text = "Sửa";
             this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnDelete
             // 
@@ -101,6 +105,7 @@
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "Xóa";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnSearch
             // 
@@ -111,6 +116,7 @@
             this.btnSearch.TabIndex = 5;
             this.btnSearch.Text = "Tra cứu";
             this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // dgvEmployees
             // 
@@ -121,7 +127,7 @@
             this.dgvEmployees.RowTemplate.Height = 24;
             this.dgvEmployees.Size = new System.Drawing.Size(573, 239);
             this.dgvEmployees.TabIndex = 6;
-            this.dgvEmployees.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmployees_CellContentClick);
+            
             // 
             // panel1
             // 
@@ -137,6 +143,33 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(228, 605);
             this.panel1.TabIndex = 7;
+            // 
+            // panel6
+            // 
+            this.panel6.BackColor = System.Drawing.Color.Honeydew;
+            this.panel6.Location = new System.Drawing.Point(23, 272);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(263, 10);
+            this.panel6.TabIndex = 14;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Noto Sans TC", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label3.Location = new System.Drawing.Point(78, 37);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(86, 21);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "TÙY CHỌN";
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.Honeydew;
+            this.panel5.Location = new System.Drawing.Point(13, 87);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(263, 21);
+            this.panel5.TabIndex = 13;
             // 
             // panel2
             // 
@@ -184,25 +217,6 @@
             this.label2.TabIndex = 12;
             this.label2.Text = "Employee ID";
             // 
-            // panel5
-            // 
-            this.panel5.BackColor = System.Drawing.Color.Honeydew;
-            this.panel5.Location = new System.Drawing.Point(13, 87);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(263, 21);
-            this.panel5.TabIndex = 13;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Noto Sans TC", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label3.Location = new System.Drawing.Point(78, 37);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(86, 21);
-            this.label3.TabIndex = 13;
-            this.label3.Text = "TÙY CHỌN";
-            // 
             // btnClear
             // 
             this.btnClear.BackColor = System.Drawing.Color.DarkOliveGreen;
@@ -214,14 +228,7 @@
             this.btnClear.TabIndex = 13;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = false;
-            // 
-            // panel6
-            // 
-            this.panel6.BackColor = System.Drawing.Color.Honeydew;
-            this.panel6.Location = new System.Drawing.Point(23, 272);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(263, 10);
-            this.panel6.TabIndex = 14;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // panel7
             // 
@@ -252,7 +259,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Honeydew;
-            this.ClientSize = new System.Drawing.Size(902, 580);
+            this.ClientSize = new System.Drawing.Size(1039, 580);
             this.Controls.Add(this.panel9);
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.panel7);
@@ -266,7 +273,9 @@
             this.Controls.Add(this.lblMessage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "EmployeeManagementForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EmployeeManagementForm";
+            this.Load += new System.EventHandler(this.EmployeeManagementForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmployees)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

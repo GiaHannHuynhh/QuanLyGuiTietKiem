@@ -63,6 +63,7 @@
             this.dgvCustomers.RowTemplate.Height = 24;
             this.dgvCustomers.Size = new System.Drawing.Size(573, 231);
             this.dgvCustomers.TabIndex = 0;
+            this.dgvCustomers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCustomers_CellContentClick);
             // 
             // btnAdd
             // 
@@ -73,6 +74,7 @@
             this.btnAdd.TabIndex = 1;
             this.btnAdd.Text = "Thêm";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnUpdate
             // 
@@ -83,6 +85,7 @@
             this.btnUpdate.TabIndex = 2;
             this.btnUpdate.Text = "Sửa";
             this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnDelete
             // 
@@ -93,6 +96,7 @@
             this.btnDelete.TabIndex = 3;
             this.btnDelete.Text = "Xóa";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnSearch
             // 
@@ -114,6 +118,7 @@
             this.lblMessage.Size = new System.Drawing.Size(70, 20);
             this.lblMessage.TabIndex = 5;
             this.lblMessage.Text = "Chi tiết";
+            this.lblMessage.Click += new System.EventHandler(this.lblMessage_Click);
             // 
             // txtCustomerID
             // 
@@ -122,6 +127,7 @@
             this.txtCustomerID.Name = "txtCustomerID";
             this.txtCustomerID.Size = new System.Drawing.Size(179, 23);
             this.txtCustomerID.TabIndex = 6;
+            this.txtCustomerID.TextChanged += new System.EventHandler(this.txtCustomerID_TextChanged);
             // 
             // panel1
             // 
@@ -246,6 +252,7 @@
             this.btnClear.TabIndex = 20;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = false;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // CustomerManagementForm
             // 
@@ -267,6 +274,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "CustomerManagementForm";
             this.Text = "CustomerManagementForm";
+            this.Load += new System.EventHandler(this.CustomerManagementForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
