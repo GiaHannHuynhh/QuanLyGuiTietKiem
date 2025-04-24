@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace QuanLyGuiTietKiem
 {
+   
     static class Program
     {
         /// <summary>

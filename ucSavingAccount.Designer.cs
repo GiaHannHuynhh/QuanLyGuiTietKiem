@@ -30,26 +30,24 @@
         {
             this.lblMessage = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtAccountID = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnRequestClose = new System.Windows.Forms.Button();
             this.btnRequestOpen = new System.Windows.Forms.Button();
             this.btnCalculateInterest = new System.Windows.Forms.Button();
             this.btnViewDetails = new System.Windows.Forms.Button();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.dgvSavingsAccounts = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmbAccounts = new System.Windows.Forms.ComboBox();
+            this.pnDisplay = new System.Windows.Forms.Panel();
             this.panel3.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSavingsAccounts)).BeginInit();
+            this.pnDisplay.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblMessage
             // 
             this.lblMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMessage.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.lblMessage.Location = new System.Drawing.Point(659, 524);
+            this.lblMessage.Location = new System.Drawing.Point(99, 215);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(400, 20);
             this.lblMessage.TabIndex = 15;
@@ -61,19 +59,11 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label2.Location = new System.Drawing.Point(672, 113);
+            this.label2.Location = new System.Drawing.Point(678, 113);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(172, 20);
             this.label2.TabIndex = 13;
             this.label2.Text = "Nhập mã sổ tiết kiệm:";
-            // 
-            // txtAccountID
-            // 
-            this.txtAccountID.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAccountID.Location = new System.Drawing.Point(675, 143);
-            this.txtAccountID.Name = "txtAccountID";
-            this.txtAccountID.Size = new System.Drawing.Size(364, 27);
-            this.txtAccountID.TabIndex = 12;
             // 
             // panel3
             // 
@@ -82,7 +72,7 @@
             this.panel3.Controls.Add(this.btnRequestOpen);
             this.panel3.Controls.Add(this.btnCalculateInterest);
             this.panel3.Controls.Add(this.btnViewDetails);
-            this.panel3.Location = new System.Drawing.Point(675, 226);
+            this.panel3.Location = new System.Drawing.Point(681, 226);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(364, 248);
             this.panel3.TabIndex = 11;
@@ -100,6 +90,7 @@
             this.btnRequestClose.TabIndex = 3;
             this.btnRequestClose.Text = "Tất toán";
             this.btnRequestClose.UseVisualStyleBackColor = true;
+            this.btnRequestClose.Click += new System.EventHandler(this.btnRequestClose_Click);
             // 
             // btnRequestOpen
             // 
@@ -146,25 +137,6 @@
             this.btnViewDetails.UseVisualStyleBackColor = true;
             this.btnViewDetails.Click += new System.EventHandler(this.btnViewDetails_Click);
             // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(48)))), ((int)(((byte)(64)))));
-            this.panel2.Controls.Add(this.dgvSavingsAccounts);
-            this.panel2.Location = new System.Drawing.Point(16, 113);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(637, 477);
-            this.panel2.TabIndex = 10;
-            // 
-            // dgvSavingsAccounts
-            // 
-            this.dgvSavingsAccounts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSavingsAccounts.Location = new System.Drawing.Point(3, 3);
-            this.dgvSavingsAccounts.Name = "dgvSavingsAccounts";
-            this.dgvSavingsAccounts.RowHeadersWidth = 51;
-            this.dgvSavingsAccounts.RowTemplate.Height = 24;
-            this.dgvSavingsAccounts.Size = new System.Drawing.Size(631, 471);
-            this.dgvSavingsAccounts.TabIndex = 0;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -180,31 +152,48 @@
             // 
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.SystemColors.Control;
-            this.groupBox1.Location = new System.Drawing.Point(669, 204);
+            this.groupBox1.Location = new System.Drawing.Point(675, 204);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(380, 279);
             this.groupBox1.TabIndex = 16;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Chức năng";
             // 
+            // cmbAccounts
+            // 
+            this.cmbAccounts.FormattingEnabled = true;
+            this.cmbAccounts.Location = new System.Drawing.Point(682, 149);
+            this.cmbAccounts.Name = "cmbAccounts";
+            this.cmbAccounts.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.cmbAccounts.Size = new System.Drawing.Size(364, 24);
+            this.cmbAccounts.TabIndex = 17;
+            this.cmbAccounts.SelectedIndexChanged += new System.EventHandler(this.cmbAccounts_SelectedIndexChanged);
+            // 
+            // pnDisplay
+            // 
+            this.pnDisplay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(48)))), ((int)(((byte)(64)))));
+            this.pnDisplay.Controls.Add(this.lblMessage);
+            this.pnDisplay.Location = new System.Drawing.Point(18, 113);
+            this.pnDisplay.Name = "pnDisplay";
+            this.pnDisplay.Size = new System.Drawing.Size(640, 490);
+            this.pnDisplay.TabIndex = 10;
+            // 
             // ucSavingAccount
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(60)))), ((int)(((byte)(74)))));
-            this.Controls.Add(this.lblMessage);
+            this.Controls.Add(this.cmbAccounts);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.txtAccountID);
             this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.pnDisplay);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
             this.Name = "ucSavingAccount";
             this.Size = new System.Drawing.Size(1080, 640);
             this.Load += new System.EventHandler(this.ucSavingAccount_Load);
             this.panel3.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSavingsAccounts)).EndInit();
+            this.pnDisplay.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -214,15 +203,14 @@
 
         private System.Windows.Forms.Label lblMessage;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtAccountID;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button btnRequestClose;
         private System.Windows.Forms.Button btnRequestOpen;
         private System.Windows.Forms.Button btnCalculateInterest;
         private System.Windows.Forms.Button btnViewDetails;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.DataGridView dgvSavingsAccounts;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ComboBox cmbAccounts;
+        private System.Windows.Forms.Panel pnDisplay;
     }
 }

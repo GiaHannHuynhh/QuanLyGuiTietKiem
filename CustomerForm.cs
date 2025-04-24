@@ -85,6 +85,11 @@ namespace QuanLyGuiTietKiem
         {
             AddUserControl(ucTransaction);
         }
+
+        private void panelHeader_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
     
 }

@@ -24,6 +24,9 @@ namespace QuanLyGuiTietKiem
         }
 
         private DB_Connect dbConnect = new DB_Connect();
+
+        
+
         private void HienThiThongTinCaNhan()
         {
             using (SqlCommand cmd = new SqlCommand("sp_LayThongTinKhachHang", dbConnect.GetConnection()))
@@ -75,6 +78,11 @@ namespace QuanLyGuiTietKiem
                     lblMessage.ForeColor = Color.Red;
                 }
             }
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -35,7 +35,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.txtEmail = new System.Windows.Forms.TextBox();
-            this.btnUpdate = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lblMessage = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -63,6 +62,7 @@
             this.groupBox2.TabIndex = 19;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Liên lạc";
+            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
             // txtAddress
             // 
@@ -73,6 +73,7 @@
             this.txtAddress.Location = new System.Drawing.Point(19, 61);
             this.txtAddress.Margin = new System.Windows.Forms.Padding(10);
             this.txtAddress.Name = "txtAddress";
+            this.txtAddress.ReadOnly = true;
             this.txtAddress.Size = new System.Drawing.Size(416, 30);
             this.txtAddress.TabIndex = 4;
             // 
@@ -96,6 +97,7 @@
             this.txtPhone.Location = new System.Drawing.Point(496, 61);
             this.txtPhone.Margin = new System.Windows.Forms.Padding(10);
             this.txtPhone.Name = "txtPhone";
+            this.txtPhone.ReadOnly = true;
             this.txtPhone.Size = new System.Drawing.Size(416, 30);
             this.txtPhone.TabIndex = 5;
             // 
@@ -130,22 +132,9 @@
             this.txtEmail.Location = new System.Drawing.Point(19, 135);
             this.txtEmail.Margin = new System.Windows.Forms.Padding(10);
             this.txtEmail.Name = "txtEmail";
+            this.txtEmail.ReadOnly = true;
             this.txtEmail.Size = new System.Drawing.Size(416, 30);
             this.txtEmail.TabIndex = 4;
-            // 
-            // btnUpdate
-            // 
-            this.btnUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(48)))), ((int)(((byte)(64)))));
-            this.btnUpdate.FlatAppearance.BorderSize = 0;
-            this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdate.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.btnUpdate.Location = new System.Drawing.Point(460, 503);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(154, 45);
-            this.btnUpdate.TabIndex = 17;
-            this.btnUpdate.Text = "CẬP NHẬT";
-            this.btnUpdate.UseVisualStyleBackColor = false;
             // 
             // label1
             // 
@@ -162,7 +151,7 @@
             // 
             this.lblMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMessage.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblMessage.Location = new System.Drawing.Point(391, 577);
+            this.lblMessage.Location = new System.Drawing.Point(393, 504);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(300, 20);
             this.lblMessage.TabIndex = 16;
@@ -189,6 +178,7 @@
             this.txtFullName.Location = new System.Drawing.Point(91, 151);
             this.txtFullName.Margin = new System.Windows.Forms.Padding(10);
             this.txtFullName.Name = "txtFullName";
+            this.txtFullName.ReadOnly = true;
             this.txtFullName.Size = new System.Drawing.Size(416, 30);
             this.txtFullName.TabIndex = 14;
             // 
@@ -229,19 +219,18 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "Ngày sinh:";
             // 
-            // PersonalInformation
+            // ucPersonalInformation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(60)))), ((int)(((byte)(74)))));
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtFullName);
             this.Controls.Add(this.groupBox1);
-            this.Name = "PersonalInformation";
+            this.Name = "ucPersonalInformation";
             this.Size = new System.Drawing.Size(1080, 640);
             this.Load += new System.EventHandler(this.PersonalInformation_Load);
             this.groupBox2.ResumeLayout(false);
@@ -262,7 +251,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtEmail;
-        private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblMessage;
         private System.Windows.Forms.Label label2;
