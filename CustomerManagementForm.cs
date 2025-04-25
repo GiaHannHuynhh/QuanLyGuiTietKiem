@@ -6,20 +6,31 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace QuanLyGuiTietKiem
 {
     public partial class CustomerManagementForm : Form
     {
+        public string CustomerID { get; set; }
+        public string FullName { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string CCCD { get; set; }
+        public DateTime NgayCap { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Address { get; set; }
+        public string Email { get; set; }
         private string CurrentEmployeeLogin; // Tên đăng nhập nhân viên hiện tại
         public CustomerManagementForm()
         {
             
             InitializeComponent();
             LoadCustomers(); // Tải danh sách khách hàng khi form mở
+
         }
         private void LoadCustomers(string customerID = null)
         {
@@ -294,6 +305,16 @@ namespace QuanLyGuiTietKiem
                 return new SqlConnection(connectionString);
             }
         }
+
+        
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+        
+
     }
 
 }

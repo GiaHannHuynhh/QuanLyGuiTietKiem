@@ -48,9 +48,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FontAwesome.Sharp, Version=6.6.0.0, Culture=neutral, PublicKeyToken=d16d1e4e568ec10f, processorArchitecture=MSIL">
+      <HintPath>packages\FontAwesome.Sharp.6.6.0\lib\net472\FontAwesome.Sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,13 +66,20 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountApprovalForm.cs">
+    <Compile Include="ChucNangNhanVien.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AccountApprovalForm.Designer.cs">
-      <DependentUpon>AccountApprovalForm.cs</DependentUpon>
+    <Compile Include="ChucNangNhanVien.Designer.cs">
+      <DependentUpon>ChucNangNhanVien.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfirmOpenSavingAcount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfirmOpenSavingAcount.Designer.cs">
+      <DependentUpon>ConfirmOpenSavingAcount.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomerDetailsForm.cs">
       <SubType>Form</SubType>
@@ -81,28 +94,31 @@
       <DependentUpon>CustomerManagementForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DB_Connect.cs" />
-    <Compile Include="EmployeeDetailsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EmployeeDetailsForm.Designer.cs">
-      <DependentUpon>EmployeeDetailsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EmployeeManagementForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EmployeeManagementForm.Designer.cs">
-      <DependentUpon>EmployeeManagementForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="HistoryandReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HistoryandReport.Designer.cs">
+      <DependentUpon>HistoryandReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AccountApprovalForm.resx">
-      <DependentUpon>AccountApprovalForm.cs</DependentUpon>
+    <Compile Include="TransactionProcess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TransactionProcess.Designer.cs">
+      <DependentUpon>TransactionProcess.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="ChucNangNhanVien.resx">
+      <DependentUpon>ChucNangNhanVien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfirmOpenSavingAcount.resx">
+      <DependentUpon>ConfirmOpenSavingAcount.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomerDetailsForm.resx">
       <DependentUpon>CustomerDetailsForm.cs</DependentUpon>
@@ -110,14 +126,11 @@
     <EmbeddedResource Include="CustomerManagementForm.resx">
       <DependentUpon>CustomerManagementForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EmployeeDetailsForm.resx">
-      <DependentUpon>EmployeeDetailsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EmployeeManagementForm.resx">
-      <DependentUpon>EmployeeManagementForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HistoryandReport.resx">
+      <DependentUpon>HistoryandReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -128,6 +141,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TransactionProcess.resx">
+      <DependentUpon>TransactionProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
