@@ -1,6 +1,6 @@
 ﻿namespace QuanLyGuiTietKiem
 {
-    partial class Form1
+    partial class CustomerMainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,14 +30,13 @@
         {
             this.SuspendLayout();
             // 
-            // Form1
+            // CustomerMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1069, 655);
-            this.Name = "Form1";
-            this.Text = "Kiểm Tra Kết Nối DB QuanLyGuiTietKiem";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.ClientSize = new System.Drawing.Size(1005, 592);
+            this.Name = "CustomerMainForm";
+            this.Text = "CustomerMainForm";
             this.ResumeLayout(false);
 
         }
@@ -45,4 +44,3 @@
         #endregion
     }
 }
-
