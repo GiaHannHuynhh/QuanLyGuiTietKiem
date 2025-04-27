@@ -32,8 +32,6 @@ namespace QuanLyGuiTietKiem
             using (SqlCommand cmd = new SqlCommand("sp_LayThongTinKhachHang", dbConnect.GetConnection()))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-
-
                 cmd.Parameters.AddWithValue("@MaKH", "KH001");
                 cmd.Parameters.AddWithValue("@TenDangNhapNguoiThucHien", "khachhang01");
 
@@ -56,11 +54,15 @@ namespace QuanLyGuiTietKiem
 
                     if (reader.Read())
                     {
+                        txtCustomerID.Text = reader["MaKH"].ToString(); 
                         txtFullName.Text = reader["HoTen"].ToString();
                         dtpBirthDate.Value = Convert.ToDateTime(reader["NgaySinh"]);
                         txtPhone.Text = reader["SDT"].ToString();
                         txtAddress.Text = reader["DiaChi"].ToString();
                         txtEmail.Text = reader["Email"].ToString();
+                        txtCCCD.Text = reader["MaSoCCCD"] != DBNull.Value ? reader["MaSoCCCD"].ToString() : "";
+                        dtpCCCDIssueDate.Value = reader["NgayCap"] != DBNull.Value ? Convert.ToDateTime(reader["NgayCap"]) : DateTime.Now;
+                        txtUsername.Text = reader["TenDangNhap"] != DBNull.Value ? reader["TenDangNhap"].ToString() : "";
                     }
 
                     reader.Close();

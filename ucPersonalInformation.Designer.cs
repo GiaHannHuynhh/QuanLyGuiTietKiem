@@ -42,6 +42,14 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dtpBirthDate = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
+            this.txtCCCD = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtUsername = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtCustomerID = new System.Windows.Forms.TextBox();
+            this.dtpCCCDIssueDate = new System.Windows.Forms.DateTimePicker();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -56,7 +64,7 @@
             this.groupBox2.Controls.Add(this.txtEmail);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.groupBox2.Location = new System.Drawing.Point(72, 253);
+            this.groupBox2.Location = new System.Drawing.Point(72, 383);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(936, 198);
             this.groupBox2.TabIndex = 19;
@@ -151,9 +159,9 @@
             // 
             this.lblMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMessage.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.lblMessage.Location = new System.Drawing.Point(393, 504);
+            this.lblMessage.Location = new System.Drawing.Point(72, 593);
             this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(300, 20);
+            this.lblMessage.Size = new System.Drawing.Size(936, 25);
             this.lblMessage.TabIndex = 16;
             this.lblMessage.Text = "Vui lòng nhập đầy đủ thông tin!";
             this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -184,13 +192,21 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.dtpCCCDIssueDate);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.txtCustomerID);
+            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.dtpBirthDate);
+            this.groupBox1.Controls.Add(this.txtUsername);
+            this.groupBox1.Controls.Add(this.txtCCCD);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox1.Location = new System.Drawing.Point(72, 95);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(936, 130);
+            this.groupBox1.Size = new System.Drawing.Size(936, 271);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Cá nhân";
@@ -218,6 +234,102 @@
             this.label4.Size = new System.Drawing.Size(88, 20);
             this.label4.TabIndex = 7;
             this.label4.Text = "Ngày sinh:";
+            // 
+            // txtCCCD
+            // 
+            this.txtCCCD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(48)))), ((int)(((byte)(64)))));
+            this.txtCCCD.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCCCD.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCCCD.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.txtCCCD.Location = new System.Drawing.Point(19, 131);
+            this.txtCCCD.Margin = new System.Windows.Forms.Padding(10);
+            this.txtCCCD.Name = "txtCCCD";
+            this.txtCCCD.ReadOnly = true;
+            this.txtCCCD.Size = new System.Drawing.Size(416, 30);
+            this.txtCCCD.TabIndex = 20;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label3.Location = new System.Drawing.Point(19, 180);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(84, 20);
+            this.label3.TabIndex = 23;
+            this.label3.Text = "Ngày cấp:";
+            // 
+            // txtUsername
+            // 
+            this.txtUsername.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(48)))), ((int)(((byte)(64)))));
+            this.txtUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUsername.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.txtUsername.Location = new System.Drawing.Point(496, 131);
+            this.txtUsername.Margin = new System.Windows.Forms.Padding(10);
+            this.txtUsername.Name = "txtUsername";
+            this.txtUsername.ReadOnly = true;
+            this.txtUsername.Size = new System.Drawing.Size(416, 30);
+            this.txtUsername.TabIndex = 20;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label8.Location = new System.Drawing.Point(493, 181);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(127, 20);
+            this.label8.TabIndex = 25;
+            this.label8.Text = "Mã khách hàng;";
+            // 
+            // txtCustomerID
+            // 
+            this.txtCustomerID.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(48)))), ((int)(((byte)(64)))));
+            this.txtCustomerID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCustomerID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCustomerID.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.txtCustomerID.Location = new System.Drawing.Point(496, 210);
+            this.txtCustomerID.Margin = new System.Windows.Forms.Padding(10);
+            this.txtCustomerID.Name = "txtCustomerID";
+            this.txtCustomerID.ReadOnly = true;
+            this.txtCustomerID.Size = new System.Drawing.Size(416, 30);
+            this.txtCustomerID.TabIndex = 24;
+            // 
+            // dtpCCCDIssueDate
+            // 
+            this.dtpCCCDIssueDate.CalendarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(48)))), ((int)(((byte)(64)))));
+            this.dtpCCCDIssueDate.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(48)))), ((int)(((byte)(64)))));
+            this.dtpCCCDIssueDate.CalendarTitleBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(48)))), ((int)(((byte)(64)))));
+            this.dtpCCCDIssueDate.CalendarTitleForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(48)))), ((int)(((byte)(64)))));
+            this.dtpCCCDIssueDate.CalendarTrailingForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(48)))), ((int)(((byte)(64)))));
+            this.dtpCCCDIssueDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpCCCDIssueDate.Location = new System.Drawing.Point(20, 211);
+            this.dtpCCCDIssueDate.Name = "dtpCCCDIssueDate";
+            this.dtpCCCDIssueDate.Size = new System.Drawing.Size(416, 30);
+            this.dtpCCCDIssueDate.TabIndex = 26;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.White;
+            this.label9.Location = new System.Drawing.Point(494, 101);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(86, 20);
+            this.label9.TabIndex = 27;
+            this.label9.Text = "Tài khoản:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.White;
+            this.label10.Location = new System.Drawing.Point(18, 102);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(63, 20);
+            this.label10.TabIndex = 28;
+            this.label10.Text = "CCCD:";
             // 
             // ucPersonalInformation
             // 
@@ -258,5 +370,13 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DateTimePicker dtpBirthDate;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtUsername;
+        private System.Windows.Forms.TextBox txtCCCD;
+        private System.Windows.Forms.DateTimePicker dtpCCCDIssueDate;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtCustomerID;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
     }
 }
