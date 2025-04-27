@@ -14,11 +14,11 @@ namespace QuanLyGuiTietKiem
     {
         private string connectionString;
 
+        public BranchManagement()
+        {
+            connectionString = ConfigurationManager.ConnectionStrings["QuanLyGuiTietKiemConnection"].ConnectionString;
 
-        public BranchManagement(){
-        connectionString = ConfigurationManager.ConnectionStrings["QuanLyGuiTietKiemConnection"].ConnectionString;
-
-         }
+        }
 
         public DataTable GetAllBranches()
         {
@@ -174,6 +174,37 @@ namespace QuanLyGuiTietKiem
                     return (0, "Lỗi khi xóa chi nhánh: " + ex.Message);
                 }
             }
+        }
+
+        public DataTable SearchBranches(string maCN, string tenCN, string diaChi)
+        {
+            DataTable dataTable = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM fn_TimKiemChiNhanh(@MaCN, @TenCN, @DiaChi)";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@MaCN", string.IsNullOrWhiteSpace(maCN) ? (object)DBNull.Value : maCN);
+                        command.Parameters.AddWithValue("@TenCN", string.IsNullOrWhiteSpace(tenCN) ? (object)DBNull.Value : tenCN);
+                        command.Parameters.AddWithValue("@DiaChi", string.IsNullOrWhiteSpace(diaChi) ? (object)DBNull.Value : diaChi);
+
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            adapter.Fill(dataTable);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    dataTable = null;
+                }
+            }
+
+            return dataTable;
         }
     }
 }

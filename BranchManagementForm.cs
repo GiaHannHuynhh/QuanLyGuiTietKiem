@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,11 +15,14 @@ namespace QuanLyGuiTietKiem
     {
         private BranchManagement branchManagement;
         private DataTable branchesTable;
+        private System.Windows.Forms.Button currentBtn;
         public BranchManagementForm()
         {
             InitializeComponent();
-            branchManagement = new BranchManagement();
+            this.Text = string.Empty;
+            this.DoubleBuffered = true;
 
+            branchManagement = new BranchManagement();
             dgvBranches.Resize += (s, e) => AdjustDataGridView();
             LoadBranches();
         }
@@ -37,7 +41,7 @@ namespace QuanLyGuiTietKiem
             }
             catch (Exception ex)
             {
-                ShowNotification(ex.Message, true);
+                ShowNotification(ex.Message, 1);
             }
         }
 
@@ -49,10 +53,10 @@ namespace QuanLyGuiTietKiem
             txtMaCN.Enabled = true;
         }
 
-        private void ShowNotification(string message, bool isError = false)
+        private void ShowNotification(string message, int result)
         {
             lblMessage.Text = message;
-            lblMessage.ForeColor = isError ? System.Drawing.Color.Red : System.Drawing.Color.Green;
+            lblMessage.ForeColor = result == 0 ? System.Drawing.Color.Red : System.Drawing.Color.Green;
             lblMessage.Visible = true;
         }
 
@@ -65,19 +69,19 @@ namespace QuanLyGuiTietKiem
         {
             if (string.IsNullOrWhiteSpace(txtMaCN.Text))
             {
-                ShowNotification("Mã chi nhánh không được để trống!", true);
+                ShowNotification("Mã chi nhánh không được để trống!", 0);
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtTenCN.Text))
             {
-                ShowNotification("Tên chi nhánh không được để trống!", true);
+                ShowNotification("Tên chi nhánh không được để trống!", 0);
                 return false;
             }
 
             if (string.IsNullOrWhiteSpace(txtDiaChi.Text))
             {
-                ShowNotification("Địa chỉ không được để trống!", true);
+                ShowNotification("Địa chỉ không được để trống!", 0);
                 return false;
             }
 
@@ -86,42 +90,71 @@ namespace QuanLyGuiTietKiem
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            ActivateButton(sender, RGBColors.color1);
+
             if (!ValidateInput())
                 return;
 
-            var (ketQua, thongBao) = branchManagement.AddBranch(txtMaCN.Text.Trim(), txtTenCN.Text.Trim(), txtDiaChi.Text.Trim());
-            ShowNotification(thongBao, ketQua == 0);
+            DialogResult result = MessageBox.Show(
+               "Bạn chắc chắn muốn thêm chi nhánh: " + txtMaCN.Text.Trim() + "?",
+               "Xác nhận thêm",
+               MessageBoxButtons.YesNo,
+               MessageBoxIcon.Question
+            );
 
-            if (ketQua == 1)
+            if (result == DialogResult.Yes)
             {
-                LoadBranches();
+                var (ketQua, thongBao) = branchManagement.AddBranch(txtMaCN.Text.Trim(), txtTenCN.Text.Trim(), txtDiaChi.Text.Trim());
+                ShowNotification(thongBao, ketQua);
+
+                if (ketQua == 1)
+                {
+                    LoadBranches();
+                    ShowNotification(thongBao, ketQua);
+                }
             }
-        }
+            }
+
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+            ActivateButton(sender, RGBColors.color2);
             if (!ValidateInput())
                 return;
 
-            var (ketQua, thongBao) = branchManagement.UpdateBranch(txtMaCN.Text.Trim(), txtTenCN.Text.Trim(), txtDiaChi.Text.Trim());
-            ShowNotification(thongBao, ketQua == 0);
+            DialogResult result = MessageBox.Show(
+               "Bạn chắc chắn muốn sửa thông tin chi nhánh " + txtMaCN.Text.Trim() + "?",
+               "Xác nhận sửa",
+               MessageBoxButtons.YesNo,
+               MessageBoxIcon.Question
+            );
 
-            if (ketQua == 1)
+            if (result == DialogResult.Yes)
             {
-                LoadBranches();
+                var (ketQua, thongBao) = branchManagement.UpdateBranch(txtMaCN.Text.Trim(), txtTenCN.Text.Trim(), txtDiaChi.Text.Trim());
+                ShowNotification(thongBao, ketQua);
+
+                if (ketQua == 1)
+                {
+                    LoadBranches();
+                    ShowNotification(thongBao, ketQua);
+                }
             }
+
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            ActivateButton(sender, RGBColors.color3);
+
             if (string.IsNullOrWhiteSpace(txtMaCN.Text))
             {
-                ShowNotification("Vui lòng chọn chi nhánh cần xóa!", true);
+                ShowNotification("Vui lòng chọn chi nhánh cần xóa!", 0);
                 return;
             }
 
             DialogResult result = MessageBox.Show(
-                "Bạn có chắc chắn muốn xóa chi nhánh này?",
+                "Bạn có chắc chắn muốn xóa chi nhánh " + txtMaCN.Text.Trim() + "?",
                 "Xác nhận xóa",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
@@ -130,11 +163,12 @@ namespace QuanLyGuiTietKiem
             if (result == DialogResult.Yes)
             {
                 var (ketQua, thongBao) = branchManagement.DeleteBranch(txtMaCN.Text.Trim());
-                ShowNotification(thongBao, ketQua == 0);
+                ShowNotification(thongBao, ketQua);
 
                 if (ketQua == 1)
                 {
                     LoadBranches();
+                    ShowNotification(thongBao, ketQua);
                 }
             }
         }
@@ -150,8 +184,6 @@ namespace QuanLyGuiTietKiem
                 txtMaCN.Enabled = false;
                 HideNotification();
             }
-            dgvBranches.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-            dgvBranches.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
 
         }
 
@@ -159,6 +191,7 @@ namespace QuanLyGuiTietKiem
         {
             ClearFields();
             HideNotification();
+            LoadBranches();
         }
 
         private void BranchManagementForm_Load(object sender, EventArgs e)
@@ -166,26 +199,35 @@ namespace QuanLyGuiTietKiem
             AdjustDataGridView();
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void ActivateButton(object senderBtn, System.Drawing.Color color)
         {
-
+            if (senderBtn != null)
+            {
+                DisableButton();
+                currentBtn = (Button)senderBtn;
+                currentBtn.BackColor = System.Drawing.Color.FromArgb(37, 96, 81);
+                currentBtn.ForeColor = color;
+                currentBtn.TextAlign = ContentAlignment.MiddleCenter;
+            }
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private struct RGBColors
         {
-
+            public static System.Drawing.Color color1 = System.Drawing.Color.FromArgb(172, 126, 241);
+            public static System.Drawing.Color color2 = System.Drawing.Color.FromArgb(249, 118, 176);
+            public static System.Drawing.Color color3 = System.Drawing.Color.FromArgb(253, 138, 114);
         }
 
-        private void label3_Click(object sender, EventArgs e)
+        private void DisableButton()
         {
-
+            if (currentBtn != null)
+            {
+                currentBtn.BackColor = System.Drawing.Color.FromArgb(31, 30, 68);
+                currentBtn.ForeColor = System.Drawing.Color.Gainsboro;
+                currentBtn.TextAlign = ContentAlignment.MiddleLeft;
+            }
         }
 
-        private void lblMessage_Click(object sender, EventArgs e)
-        {
-
-        }
-                
         private void AdjustDataGridView()
         {
             if (dgvBranches.Columns.Count == 0 || dgvBranches.Rows.Count == 0)
@@ -196,24 +238,11 @@ namespace QuanLyGuiTietKiem
             wrapStyle.WrapMode = DataGridViewTriState.True;
             dgvBranches.DefaultCellStyle = wrapStyle;
 
-            // Tính toán kích thước
-            int totalWidth = dgvBranches.ClientSize.Width - SystemInformation.VerticalScrollBarWidth;
-
-            // Đặt tỷ lệ cột (20%-40%-40%)
-            if (dgvBranches.Columns.Contains("MaCN"))
-                dgvBranches.Columns["MaCN"].Width = (int)(totalWidth * 0.15);
-            if (dgvBranches.Columns.Contains("TenCN"))
-                dgvBranches.Columns["TenCN"].Width = (int)(totalWidth * 0.3);
-            if (dgvBranches.Columns.Contains("DiaChi"))
-                dgvBranches.Columns["DiaChi"].Width = (int)(totalWidth * 0.55);
+            // Đảm bảo các cột điền đầy DataGridView
+            dgvBranches.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             // Điều chỉnh hàng
             AdjustRowHeights();
-        }
-
-        private void BranchManagementForm_Resize(object sender, EventArgs e)
-        {
-            AdjustDataGridView();
         }
 
         private void AdjustRowHeights()
@@ -262,16 +291,53 @@ namespace QuanLyGuiTietKiem
                     headerBounds,
                     centerFormat);
 
-                dgvBranches.RowHeadersWidth = (int)(dgvBranches.Width * 0.05);
 
                 //Không cho phép chỉnh sửa trên bảng dữ liệu
                 dgvBranches.ReadOnly = true;
-            dgvBranches.AllowUserToAddRows = false;
-            dgvBranches.AllowUserToDeleteRows = false;
-            dgvBranches.EditMode = DataGridViewEditMode.EditProgrammatically;
+                dgvBranches.AllowUserToAddRows = false;
+                dgvBranches.AllowUserToDeleteRows = false;
+                dgvBranches.EditMode = DataGridViewEditMode.EditProgrammatically;
             };
+        }
 
-            dgvBranches.AllowUserToAddRows = false;
+
+        private void label1_Click(object sender, EventArgs e) { }
+
+        private void label2_Click(object sender, EventArgs e) { }
+
+        private void label3_Click(object sender, EventArgs e) { }
+
+        private void lblMessage_Click(object sender, EventArgs e) { }
+
+        private void panelLogo_Paint(object sender, PaintEventArgs e) {}
+
+        private void panelMenu_Paint(object sender, PaintEventArgs e) {}
+
+        private void txtMaCN_TextChanged(object sender, EventArgs e) {}
+
+        private void btnSearches_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender, RGBColors.color3);
+
+            // Gọi phương thức SearchBranches để tìm kiếm chi nhánh
+            DataTable searchResults = branchManagement.SearchBranches(
+                txtMaCN.Text.Trim(),
+                txtTenCN.Text.Trim(),
+                txtDiaChi.Text.Trim()
+            );
+
+            // Hiển thị kết quả tìm kiếm trong DataGridView
+            dgvBranches.DataSource = searchResults;
+
+            // Hiển thị thông báo
+            if (searchResults == null || searchResults.Rows.Count == 0)
+            {
+                ShowNotification("Không tìm thấy chi nhánh nào khớp với tiêu chí!", 0);
+            }
+            else
+            {
+                ShowNotification($"Tìm thấy {searchResults.Rows.Count} chi nhánh!", 1);
+            }
         }
     }
 }
