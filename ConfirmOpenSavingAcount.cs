@@ -15,7 +15,7 @@ namespace QuanLyGuiTietKiem
     public partial class ConfirmOpenSavingAcount : Form
     {
 
-        private string currentEmployeeID = "NV001"; // Mặc định hoặc được gán khi khởi tạo form
+        private string currentEmployeeID = "NV002"; // Mặc định hoặc được gán khi khởi tạo form
         public ConfirmOpenSavingAcount()
         {
             InitializeComponent();
@@ -129,21 +129,21 @@ namespace QuanLyGuiTietKiem
                         cmd.Parameters.AddWithValue("@MaNV", currentEmployeeID);
                         cmd.Parameters.AddWithValue("@MaCN", cmbBranch.SelectedValue);
                         cmd.Parameters.AddWithValue("@TrangThai", "Đã xác nhận");
-                        cmd.Parameters.Add("@KetQua", SqlDbType.Bit).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add("@ThongBao", SqlDbType.NVarChar, 255).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(new SqlParameter("@KetQua", SqlDbType.Bit) { Direction = ParameterDirection.Output });
+                        cmd.Parameters.Add(new SqlParameter("@ThongBao", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output });
 
                         conn.Open();
                         cmd.ExecuteNonQuery();
 
                         bool ketQua = Convert.ToBoolean(cmd.Parameters["@KetQua"].Value);
-                        string thongBao = cmd.Parameters["@ThongBao"].Value.ToString();
+                        string thongBao = cmd.Parameters["@ThongBao"].Value?.ToString() ?? "Không có thông báo";
 
                         lblMessage.Text = thongBao;
                         if (ketQua)
                         {
                             MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            LoadOpenRequests(); // Tải lại danh sách yêu cầu
-                            LoadSavingsAccounts(); // Tải lại danh sách sổ
+                            LoadOpenRequests();
+                            LoadSavingsAccounts();
                         }
                         else
                         {
@@ -152,9 +152,15 @@ namespace QuanLyGuiTietKiem
                     }
                 }
             }
+            catch (SqlException ex)
+            {
+                lblMessage.Text = $"Lỗi SQL: {ex.Message} (Mã lỗi: {ex.Number})";
+                MessageBox.Show($"Lỗi SQL: {ex.Message}\nMã lỗi: {ex.Number}\nNguồn: {ex.Source}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi hệ thống: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lblMessage.Text = $"Lỗi hệ thống: {ex.Message}";
+                MessageBox.Show($"Lỗi hệ thống: {ex.Message}\nChi tiết: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -175,22 +181,22 @@ namespace QuanLyGuiTietKiem
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@MaYC", dgvOpenRequests.SelectedRows[0].Cells["MaYC"].Value);
                         cmd.Parameters.AddWithValue("@MaNV", currentEmployeeID);
-                        cmd.Parameters.AddWithValue("@MaCN", DBNull.Value); // Không cần MaCN khi từ chối
+                        cmd.Parameters.AddWithValue("@MaCN", DBNull.Value);
                         cmd.Parameters.AddWithValue("@TrangThai", "Từ chối");
-                        cmd.Parameters.Add("@KetQua", SqlDbType.Bit).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add("@ThongBao", SqlDbType.NVarChar, 255).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(new SqlParameter("@KetQua", SqlDbType.Bit) { Direction = ParameterDirection.Output });
+                        cmd.Parameters.Add(new SqlParameter("@ThongBao", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output });
 
                         conn.Open();
                         cmd.ExecuteNonQuery();
 
                         bool ketQua = Convert.ToBoolean(cmd.Parameters["@KetQua"].Value);
-                        string thongBao = cmd.Parameters["@ThongBao"].Value.ToString();
+                        string thongBao = cmd.Parameters["@ThongBao"].Value?.ToString() ?? "Không có thông báo";
 
                         lblMessage.Text = thongBao;
                         if (ketQua)
                         {
                             MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            LoadOpenRequests(); // Tải lại danh sách yêu cầu
+                            LoadOpenRequests();
                         }
                         else
                         {
@@ -199,9 +205,15 @@ namespace QuanLyGuiTietKiem
                     }
                 }
             }
+            catch (SqlException ex)
+            {
+                lblMessage.Text = $"Lỗi SQL: {ex.Message} (Mã lỗi: {ex.Number})";
+                MessageBox.Show($"Lỗi SQL: {ex.Message}\nMã lỗi: {ex.Number}\nNguồn: {ex.Source}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi hệ thống: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lblMessage.Text = $"Lỗi hệ thống: {ex.Message}";
+                MessageBox.Show($"Lỗi hệ thống: {ex.Message}\nChi tiết: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

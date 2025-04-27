@@ -111,31 +111,48 @@ namespace QuanLyGuiTietKiem
                         using (SqlConnection conn = DatabaseHelper.GetConnection())
                         {
                             conn.Open();
-                            SqlCommand cmd = new SqlCommand("sp_ThemKhachHangMoi", conn);
-                            cmd.CommandType = CommandType.StoredProcedure;
+                            using (SqlCommand cmd = new SqlCommand("sp_ThemKhachHangMoi", conn))
+                            {
+                                cmd.CommandType = CommandType.StoredProcedure;
+                                cmd.Parameters.AddWithValue("@HoTen", detailsForm.FullName);
+                                cmd.Parameters.AddWithValue("@NgaySinh", detailsForm.DateOfBirth);
+                                cmd.Parameters.AddWithValue("@MaSoCCCD", detailsForm.CCCD);
+                                cmd.Parameters.AddWithValue("@NgayCap", detailsForm.NgayCap);
+                                cmd.Parameters.AddWithValue("@SDT", detailsForm.PhoneNumber);
+                                cmd.Parameters.AddWithValue("@DiaChi", detailsForm.Address);
+                                cmd.Parameters.AddWithValue("@Email", detailsForm.Email);
+                                cmd.Parameters.AddWithValue("@TenDangNhapNV", "nv002"); // Đồng bộ với các form khác
+                                cmd.Parameters.Add(new SqlParameter("@MaKH", SqlDbType.VarChar, 10) { Direction = ParameterDirection.Output });
+                                cmd.Parameters.Add(new SqlParameter("@KetQua", SqlDbType.Bit) { Direction = ParameterDirection.Output });
+                                cmd.Parameters.Add(new SqlParameter("@ThongBao", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output });
 
-                            cmd.Parameters.AddWithValue("@HoTen", detailsForm.FullName);
-                            cmd.Parameters.AddWithValue("@NgaySinh", detailsForm.DateOfBirth);
-                            cmd.Parameters.AddWithValue("@MaSoCCCD", detailsForm.CCCD);
-                            cmd.Parameters.AddWithValue("@NgayCap", detailsForm.NgayCap);
-                            cmd.Parameters.AddWithValue("@SDT", detailsForm.PhoneNumber);
-                            cmd.Parameters.AddWithValue("@DiaChi", detailsForm.Address);
-                            cmd.Parameters.AddWithValue("@Email", detailsForm.Email);
-                            cmd.Parameters.AddWithValue("@TenDangNhapNV", "nv001"); // Giá trị mặc định
+                                cmd.ExecuteNonQuery();
 
-                            SqlParameter maKHParam = new SqlParameter("@MaKH", SqlDbType.VarChar, 10) { Direction = ParameterDirection.Output };
-                            cmd.Parameters.Add(maKHParam);
+                                bool ketQua = Convert.ToBoolean(cmd.Parameters["@KetQua"].Value);
+                                string thongBao = cmd.Parameters["@ThongBao"].Value?.ToString() ?? "Không có thông báo";
+                                string newCustomerID = cmd.Parameters["@MaKH"].Value?.ToString();
 
-                            cmd.ExecuteNonQuery();
-
-                            string newCustomerID = maKHParam.Value.ToString();
-                            lblMessage.Text = $"Thêm khách hàng thành công! Mã KH: {newCustomerID}";
-                            LoadCustomers();
+                                lblMessage.Text = ketQua ? $"Thêm khách hàng thành công! Mã KH: {newCustomerID}" : $"Lỗi: {thongBao}";
+                                if (ketQua)
+                                {
+                                    LoadCustomers();
+                                }
+                                else
+                                {
+                                    MessageBox.Show(thongBao, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
                         }
+                    }
+                    catch (SqlException ex)
+                    {
+                        lblMessage.Text = $"Lỗi SQL: {ex.Message} (Mã lỗi: {ex.Number})";
+                        MessageBox.Show($"Lỗi SQL: {ex.Message}\nMã lỗi: {ex.Number}\nNguồn: {ex.Source}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     catch (Exception ex)
                     {
-                        lblMessage.Text = "Lỗi khi thêm khách hàng: " + ex.Message;
+                        lblMessage.Text = $"Lỗi hệ thống: {ex.Message}";
+                        MessageBox.Show($"Lỗi hệ thống: {ex.Message}\nChi tiết: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
@@ -158,84 +175,102 @@ namespace QuanLyGuiTietKiem
                 using (SqlConnection conn = DatabaseHelper.GetConnection())
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand(
+                    using (SqlCommand cmd = new SqlCommand(
                         @"SELECT kh.MaKH, kh.HoTen, kh.NgaySinh, kh.SDT, kh.DiaChi, kh.Email, 
-                                 mdd.MaSoCCCD, mdd.NgayCap
-                          FROM KHACH_HANG kh
-                          LEFT JOIN MA_DINH_DANH mdd ON kh.MaKH = mdd.MaKH
-                          WHERE kh.MaKH = @MaKH", conn);
-                    cmd.Parameters.AddWithValue("@MaKH", txtCustomerID.Text.Trim());
-
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-
-                    if (dt.Rows.Count == 0)
+                         mdd.MaSoCCCD, mdd.NgayCap
+                  FROM KHACH_HANG kh
+                  LEFT JOIN MA_DINH_DANH mdd ON kh.MaKH = mdd.MaKH
+                  WHERE kh.MaKH = @MaKH", conn))
                     {
-                        lblMessage.Text = "Không tìm thấy khách hàng với mã này!";
-                        return;
-                    }
+                        cmd.Parameters.AddWithValue("@MaKH", txtCustomerID.Text.Trim());
+                        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
 
-                    DataRow row = dt.Rows[0];
-                    string customerID = row["MaKH"].ToString();
-                    string fullName = row["HoTen"].ToString();
-                    DateTime dateOfBirth = Convert.ToDateTime(row["NgaySinh"]);
-                    string phoneNumber = row["SDT"].ToString();
-                    string address = row["DiaChi"].ToString();
-                    string email = row["Email"].ToString();
-                    string cccd = row["MaSoCCCD"].ToString();
-                    DateTime ngayCap = Convert.ToDateTime(row["NgayCap"]);
-
-                    using (var detailsForm = new CustomerDetailsForm(customerID))
-                    {
-                        detailsForm.LoadCustomerData(customerID, fullName, dateOfBirth, phoneNumber, address, cccd, ngayCap, email);
-                        if (detailsForm.ShowDialog() == DialogResult.OK)
+                        if (dt.Rows.Count == 0)
                         {
-                            try
+                            lblMessage.Text = "Không tìm thấy khách hàng với mã này!";
+                            return;
+                        }
+
+                        DataRow row = dt.Rows[0];
+                        string customerID = row["MaKH"].ToString();
+                        string fullName = row["HoTen"].ToString();
+                        DateTime dateOfBirth = Convert.ToDateTime(row["NgaySinh"]);
+                        string phoneNumber = row["SDT"].ToString();
+                        string address = row["DiaChi"].ToString();
+                        string email = row["Email"].ToString();
+                        string cccd = row["MaSoCCCD"].ToString();
+                        DateTime ngayCap = Convert.ToDateTime(row["NgayCap"]);
+
+                        using (var detailsForm = new CustomerDetailsForm(customerID))
+                        {
+                            detailsForm.LoadCustomerData(customerID, fullName, dateOfBirth, phoneNumber, address, cccd, ngayCap, email);
+                            if (detailsForm.ShowDialog() == DialogResult.OK)
                             {
-                                using (SqlConnection connUpdate = DatabaseHelper.GetConnection())
+                                try
                                 {
-                                    connUpdate.Open();
-                                    SqlCommand cmdUpdate = new SqlCommand("sp_CapNhatThongTinKhachHang", connUpdate);
-                                    cmdUpdate.CommandType = CommandType.StoredProcedure;
+                                    using (SqlConnection connUpdate = DatabaseHelper.GetConnection())
+                                    {
+                                        connUpdate.Open();
+                                        using (SqlCommand cmdUpdate = new SqlCommand("sp_CapNhatThongTinKhachHang", connUpdate))
+                                        {
+                                            cmdUpdate.CommandType = CommandType.StoredProcedure;
+                                            cmdUpdate.Parameters.AddWithValue("@MaKH", detailsForm.CustomerID);
+                                            cmdUpdate.Parameters.AddWithValue("@HoTen", detailsForm.FullName);
+                                            cmdUpdate.Parameters.AddWithValue("@NgaySinh", detailsForm.DateOfBirth);
+                                            cmdUpdate.Parameters.AddWithValue("@SDT", detailsForm.PhoneNumber);
+                                            cmdUpdate.Parameters.AddWithValue("@DiaChi", detailsForm.Address);
+                                            cmdUpdate.Parameters.AddWithValue("@Email", detailsForm.Email);
+                                            cmdUpdate.Parameters.AddWithValue("@TenDangNhapNV", "nv002"); // Đồng bộ
+                                            cmdUpdate.Parameters.Add(new SqlParameter("@KetQua", SqlDbType.Bit) { Direction = ParameterDirection.Output });
+                                            cmdUpdate.Parameters.Add(new SqlParameter("@ThongBao", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output });
 
-                                    cmdUpdate.Parameters.AddWithValue("@MaKH", detailsForm.CustomerID);
-                                    cmdUpdate.Parameters.AddWithValue("@HoTen", detailsForm.FullName);
-                                    cmdUpdate.Parameters.AddWithValue("@NgaySinh", detailsForm.DateOfBirth);
-                                    cmdUpdate.Parameters.AddWithValue("@SDT", detailsForm.PhoneNumber);
-                                    cmdUpdate.Parameters.AddWithValue("@DiaChi", detailsForm.Address);
-                                    cmdUpdate.Parameters.AddWithValue("@Email", detailsForm.Email);
-                                    cmdUpdate.Parameters.AddWithValue("@TenDangNhapNV", "nv001"); // Giá trị mặc định
+                                            cmdUpdate.ExecuteNonQuery();
 
-                                    SqlParameter ketQuaParam = new SqlParameter("@KetQua", SqlDbType.Bit) { Direction = ParameterDirection.Output };
-                                    SqlParameter thongBaoParam = new SqlParameter("@ThongBao", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output };
-                                    cmdUpdate.Parameters.Add(ketQuaParam);
-                                    cmdUpdate.Parameters.Add(thongBaoParam);
+                                            bool ketQua = Convert.ToBoolean(cmdUpdate.Parameters["@KetQua"].Value);
+                                            string thongBao = cmdUpdate.Parameters["@ThongBao"].Value?.ToString() ?? "Không có thông báo";
 
-                                    cmdUpdate.ExecuteNonQuery();
-
-                                    bool ketQua = Convert.ToBoolean(ketQuaParam.Value);
-                                    string thongBao = thongBaoParam.Value?.ToString();
-
-                                    lblMessage.Text = ketQua ? "Cập nhật khách hàng thành công!" : $"Lỗi: {thongBao}";
-                                    LoadCustomers();
+                                            lblMessage.Text = ketQua ? "Cập nhật khách hàng thành công!" : $"Lỗi: {thongBao}";
+                                            if (ketQua)
+                                            {
+                                                LoadCustomers();
+                                            }
+                                            else
+                                            {
+                                                MessageBox.Show(thongBao, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (SqlException ex)
+                                {
+                                    lblMessage.Text = $"Lỗi SQL: {ex.Message} (Mã lỗi: {ex.Number})";
+                                    MessageBox.Show($"Lỗi SQL: {ex.Message}\nMã lỗi: {ex.Number}\nNguồn: {ex.Source}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                                catch (Exception ex)
+                                {
+                                    lblMessage.Text = $"Lỗi hệ thống: {ex.Message}";
+                                    MessageBox.Show($"Lỗi hệ thống: {ex.Message}\nChi tiết: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
                             }
-                            catch (Exception ex)
+                            else
                             {
-                                lblMessage.Text = "Lỗi khi cập nhật khách hàng: " + ex.Message;
+                                lblMessage.Text = "Đã hủy thao tác cập nhật khách hàng.";
                             }
-                        }
-                        else
-                        {
-                            lblMessage.Text = "Đã hủy thao tác cập nhật khách hàng.";
                         }
                     }
                 }
             }
+            catch (SqlException ex)
+            {
+                lblMessage.Text = $"Lỗi SQL: {ex.Message} (Mã lỗi: {ex.Number})";
+                MessageBox.Show($"Lỗi SQL: {ex.Message}\nMã lỗi: {ex.Number}\nNguồn: {ex.Source}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
-                lblMessage.Text = "Lỗi khi tải thông tin khách hàng: " + ex.Message;
+                lblMessage.Text = $"Lỗi hệ thống: {ex.Message}";
+                MessageBox.Show($"Lỗi hệ thống: {ex.Message}\nChi tiết: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -257,29 +292,40 @@ namespace QuanLyGuiTietKiem
                 using (SqlConnection conn = DatabaseHelper.GetConnection())
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("sp_XoaKhachHang", conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    using (SqlCommand cmd = new SqlCommand("sp_XoaKhachHang", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@MaKH", txtCustomerID.Text.Trim());
+                        cmd.Parameters.AddWithValue("@TenDangNhapNV", "nv002"); // Đồng bộ
+                        cmd.Parameters.Add(new SqlParameter("@KetQua", SqlDbType.Bit) { Direction = ParameterDirection.Output });
+                        cmd.Parameters.Add(new SqlParameter("@ThongBao", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output });
 
-                    cmd.Parameters.AddWithValue("@MaKH", txtCustomerID.Text.Trim());
-                    cmd.Parameters.AddWithValue("@TenDangNhapNV", "nv001"); // Giá trị mặc định
+                        cmd.ExecuteNonQuery();
 
-                    SqlParameter ketQuaParam = new SqlParameter("@KetQua", SqlDbType.Bit) { Direction = ParameterDirection.Output };
-                    SqlParameter thongBaoParam = new SqlParameter("@ThongBao", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output };
-                    cmd.Parameters.Add(ketQuaParam);
-                    cmd.Parameters.Add(thongBaoParam);
+                        bool ketQua = Convert.ToBoolean(cmd.Parameters["@KetQua"].Value);
+                        string thongBao = cmd.Parameters["@ThongBao"].Value?.ToString() ?? "Không có thông báo";
 
-                    cmd.ExecuteNonQuery();
-
-                    bool ketQua = Convert.ToBoolean(ketQuaParam.Value);
-                    string thongBao = thongBaoParam.Value?.ToString();
-
-                    lblMessage.Text = ketQua ? "Xóa khách hàng thành công!" : $"Lỗi: {thongBao}";
-                    LoadCustomers();
+                        lblMessage.Text = ketQua ? "Xóa khách hàng thành công!" : $"Lỗi: {thongBao}";
+                        if (ketQua)
+                        {
+                            LoadCustomers();
+                        }
+                        else
+                        {
+                            MessageBox.Show(thongBao, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
                 }
+            }
+            catch (SqlException ex)
+            {
+                lblMessage.Text = $"Lỗi SQL: {ex.Message} (Mã lỗi: {ex.Number})";
+                MessageBox.Show($"Lỗi SQL: {ex.Message}\nMã lỗi: {ex.Number}\nNguồn: {ex.Source}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                lblMessage.Text = "Lỗi khi xóa khách hàng: " + ex.Message;
+                lblMessage.Text = $"Lỗi hệ thống: {ex.Message}";
+                MessageBox.Show($"Lỗi hệ thống: {ex.Message}\nChi tiết: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

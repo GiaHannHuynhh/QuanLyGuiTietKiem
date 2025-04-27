@@ -46,12 +46,12 @@ namespace QuanLyGuiTietKiem
                     using (SqlCommand cmd = new SqlCommand("sp_TraCuuLichSuGiaoDich_KhachHang", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@TenDangNhap", "nv001");
+                        cmd.Parameters.AddWithValue("@TenDangNhap", "nv002");
                         cmd.Parameters.AddWithValue("@MaKH", maKH);
                         cmd.Parameters.AddWithValue("@TuNgay", (object)tuNgay ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@DenNgay", (object)denNgay ?? DBNull.Value);
-                        cmd.Parameters.Add("@KetQua", SqlDbType.Bit).Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add("@ThongBao", SqlDbType.NVarChar, 255).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(new SqlParameter("@KetQua", SqlDbType.Bit) { Direction = ParameterDirection.Output });
+                        cmd.Parameters.Add(new SqlParameter("@ThongBao", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output });
 
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
                         transactionData = new DataTable();
@@ -59,7 +59,7 @@ namespace QuanLyGuiTietKiem
                         da.Fill(transactionData);
 
                         bool ketQua = Convert.ToBoolean(cmd.Parameters["@KetQua"].Value);
-                        string thongBao = cmd.Parameters["@ThongBao"].Value.ToString();
+                        string thongBao = cmd.Parameters["@ThongBao"].Value?.ToString() ?? "Không có thông báo";
 
                         lblMessage.Text = thongBao;
                         if (ketQua)
@@ -78,9 +78,15 @@ namespace QuanLyGuiTietKiem
                     }
                 }
             }
+            catch (SqlException ex)
+            {
+                lblMessage.Text = $"Lỗi SQL: {ex.Message} (Mã lỗi: {ex.Number})";
+                MessageBox.Show($"Lỗi SQL: {ex.Message}\nMã lỗi: {ex.Number}\nNguồn: {ex.Source}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi hệ thống: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lblMessage.Text = $"Lỗi hệ thống: {ex.Message}";
+                MessageBox.Show($"Lỗi hệ thống: {ex.Message}\nChi tiết: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -141,7 +147,22 @@ namespace QuanLyGuiTietKiem
             public static SqlConnection GetConnection()
             {
                 string connectionString = ConfigurationManager.ConnectionStrings["QuanLyGuiTietKiemConnection"].ConnectionString;
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    throw new Exception("Chuỗi kết nối không được tìm thấy trong tệp cấu hình!");
+                }
                 return new SqlConnection(connectionString);
+            }
+
+            public static void LogError(Exception ex, string context)
+            {
+                string logMessage = $"[{DateTime.Now}] Ngữ cảnh: {context}\nLỗi: {ex.Message}\nChi tiết: {ex.StackTrace}";
+                if (ex is SqlException sqlEx)
+                {
+                    logMessage += $"\nMã lỗi SQL: {sqlEx.Number}\nNguồn: {sqlEx.Source}";
+                }
+                // File.AppendAllText("error.log", logMessage + "\n"); // Bỏ comment nếu muốn ghi vào file
+                MessageBox.Show(logMessage, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

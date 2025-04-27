@@ -15,7 +15,7 @@ namespace QuanLyGuiTietKiem
     public partial class TransactionProcess : Form
     {
 
-        private string currentEmployeeID = "NV001"; // Mặc định hoặc được gán khi khởi tạo form
+        private string currentEmployeeID = "NV002"; /// Mặc định hoặc được gán khi khởi tạo form
         public TransactionProcess()
         {
             InitializeComponent();
@@ -30,12 +30,18 @@ namespace QuanLyGuiTietKiem
             }
 
             string maSoTK = txtAccountID.Text;
-            string loaiGD = cmbTransactionType.SelectedItem.ToString();
+            string loaiGD = cmbTransactionType.SelectedItem?.ToString();
 
-            // Nếu là tất toán, không cần nhập số tiền
+            if (string.IsNullOrEmpty(loaiGD))
+            {
+                MessageBox.Show("Vui lòng chọn loại giao dịch!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            decimal soTien = 0;
             if (loaiGD != "Tất toán")
             {
-                if (string.IsNullOrWhiteSpace(txtAmount.Text) || !decimal.TryParse(txtAmount.Text, out decimal soTien) || soTien <= 0)
+                if (string.IsNullOrWhiteSpace(txtAmount.Text) || !decimal.TryParse(txtAmount.Text, out soTien) || soTien <= 0)
                 {
                     MessageBox.Show("Số tiền không hợp lệ! Vui lòng nhập số tiền lớn hơn 0.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -50,25 +56,24 @@ namespace QuanLyGuiTietKiem
 
                     if (loaiGD == "Tất toán")
                     {
-                        // Gọi sp_TatToanSoTietKiem
                         using (SqlCommand cmd = new SqlCommand("sp_TatToanSoTietKiem", conn))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.Parameters.AddWithValue("@MaSoTK", maSoTK);
                             cmd.Parameters.AddWithValue("@MaNV", currentEmployeeID);
-                            cmd.Parameters.Add("@KetQua", SqlDbType.Bit).Direction = ParameterDirection.Output;
-                            cmd.Parameters.Add("@ThongBao", SqlDbType.NVarChar, 255).Direction = ParameterDirection.Output;
+                            cmd.Parameters.Add(new SqlParameter("@KetQua", SqlDbType.Bit) { Direction = ParameterDirection.Output });
+                            cmd.Parameters.Add(new SqlParameter("@ThongBao", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output });
 
                             cmd.ExecuteNonQuery();
 
                             bool ketQua = Convert.ToBoolean(cmd.Parameters["@KetQua"].Value);
-                            string thongBao = cmd.Parameters["@ThongBao"].Value.ToString();
+                            string thongBao = cmd.Parameters["@ThongBao"].Value?.ToString() ?? "Không có thông báo";
 
                             lblMessage.Text = thongBao;
                             if (ketQua)
                             {
                                 MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                LoadTransactions(maSoTK); // Tải lại danh sách giao dịch
+                                LoadTransactions(maSoTK);
                             }
                             else
                             {
@@ -78,12 +83,9 @@ namespace QuanLyGuiTietKiem
                     }
                     else
                     {
-                        // Các loại giao dịch khác (Gửi tiền, Rút gốc, Rút lãi)
                         string maGD = GenerateTransactionID();
                         if (maGD == null)
                             return;
-
-                        decimal soTien = decimal.Parse(txtAmount.Text);
 
                         using (SqlCommand cmd = new SqlCommand("sp_TaoGiaoDich", conn))
                         {
@@ -94,19 +96,19 @@ namespace QuanLyGuiTietKiem
                             cmd.Parameters.AddWithValue("@SoTien", soTien);
                             cmd.Parameters.AddWithValue("@NgayGD", DateTime.Now);
                             cmd.Parameters.AddWithValue("@MaNV", currentEmployeeID);
-                            cmd.Parameters.Add("@KetQua", SqlDbType.Bit).Direction = ParameterDirection.Output;
-                            cmd.Parameters.Add("@ThongBao", SqlDbType.NVarChar, 255).Direction = ParameterDirection.Output;
+                            cmd.Parameters.Add(new SqlParameter("@KetQua", SqlDbType.Bit) { Direction = ParameterDirection.Output });
+                            cmd.Parameters.Add(new SqlParameter("@ThongBao", SqlDbType.NVarChar, 255) { Direction = ParameterDirection.Output });
 
                             cmd.ExecuteNonQuery();
 
                             bool ketQua = Convert.ToBoolean(cmd.Parameters["@KetQua"].Value);
-                            string thongBao = cmd.Parameters["@ThongBao"].Value.ToString();
+                            string thongBao = cmd.Parameters["@ThongBao"].Value?.ToString() ?? "Không có thông báo";
 
                             lblMessage.Text = thongBao;
                             if (ketQua)
                             {
                                 MessageBox.Show(thongBao, "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                LoadTransactions(maSoTK); // Tải lại danh sách giao dịch
+                                LoadTransactions(maSoTK);
                                 txtAmount.Clear();
                             }
                             else
@@ -117,9 +119,15 @@ namespace QuanLyGuiTietKiem
                     }
                 }
             }
+            catch (SqlException ex)
+            {
+                lblMessage.Text = $"Lỗi SQL: {ex.Message} (Mã lỗi: {ex.Number})";
+                MessageBox.Show($"Lỗi SQL: {ex.Message}\nMã lỗi: {ex.Number}\nNguồn: {ex.Source}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi hệ thống: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                lblMessage.Text = $"Lỗi hệ thống: {ex.Message}";
+                MessageBox.Show($"Lỗi hệ thống: {ex.Message}\nChi tiết: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void LoadTransactions(string maSoTK)
